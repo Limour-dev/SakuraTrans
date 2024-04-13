@@ -67,7 +67,7 @@ def transJa(_s: str):
         try:
             retn = transJa_One(_s)
             if retn:
-                retn = removeRep(retn)
+                retn = removeRep(retn).strip()
                 if retn.startswith('「') and not retn.endswith('」'):
                     retn += '」'
                 return retn
