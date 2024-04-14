@@ -1,5 +1,5 @@
 # mamba create -n SakuraTrans python=3.10 langdetect requests -c conda-forge
-from langdetect import detect_langs, DetectorFactory
+from langdetect import detect_langs, DetectorFactory, lang_detect_exception
 from transJa import transJa as _transJa
 
 DetectorFactory.seed = 0
@@ -39,7 +39,12 @@ def detect_zh_ja_fix(_sl, _delta=10):
 
 def detect_zh_ja(_s: str):
     _s = _s.strip()
-    _langs = detect_langs(_s)
+    if not _s:
+        return 0
+    try:
+        _langs = detect_langs(_s)
+    except lang_detect_exception.LangDetectException as e:
+        return 0
     _lang = _langs[0]
     if not (_lang.lang.startswith('ja') and _lang.prob > 0.95):
         return 0
